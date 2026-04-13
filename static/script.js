@@ -7,8 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const cells = document.querySelectorAll('.cell-data');
     
     let scheduleData = {};
+    const EDIT_PASSWORD = "amabile1234"; // 여기에 원하는 암호를 적으세요!
+
+    function checkPassword() {
+        const input = prompt("수정용 암호를 입력하세요:");
+        if (input === EDIT_PASSWORD) {
+            return true;
+        } else {
+            alert("암호가 틀렸습니다!");
+            return false;
+        }
+    }
 
     clearBtn.addEventListener('click', () => {
+        if (!checkPassword()) return;
         if (confirm('정말로 모든 내용을 지우시겠습니까? 저장된 내용까지 초기화하려면 지운 후 [저장하기]를 눌러야 합니다.')) {
             scheduleData = {};
             renderData();
@@ -29,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < teamName.length; i++) {
             hash = teamName.charCodeAt(i) + ((hash << 5) - hash);
         }
-        // Generate pastel color (H, S, L)
         const h = Math.abs(hash % 360);
         return `hsl(${h}, 70%, 85%)`;
     }
@@ -82,6 +93,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     saveBtn.addEventListener('click', () => {
+        if (!checkPassword()) return;
+        
         saveBtn.textContent = '저장 중...';
         saveBtn.disabled = true;
         fetch('/api/schedule', {
