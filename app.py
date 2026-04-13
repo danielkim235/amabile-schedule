@@ -45,7 +45,8 @@ def parse_teams(file_path):
 
 @app.route('/')
 def index():
-    teams = parse_teams('../팀 목록.txt')
+    # 경로를 '../'에서 './'로 변경 (같은 폴더에 위치함)
+    teams = parse_teams('./팀 목록.txt')
     start_date = datetime(2026, 7, 6)
     end_date = datetime(2026, 8, 23)
     weeks, current_week_start = [], start_date
