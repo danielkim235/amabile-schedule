@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>합주 시간표 작성</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>합주 시간표</h1>
+            <div class="actions">
+                <button id="clearBtn" class="btn danger">전체 지우기</button>
+                <button id="saveBtn" class="btn primary">저장하기</button>
+                <button id="exportBtn" class="btn secondary">엑셀 다운로드</button>
+            </div>
+        </header>
+
+        <div class="controls">
+            <label for="teamSelect"><strong>팀 선택:</strong></label>
+            <select id="teamSelect">
+                <option value="">-- 지우기 --</option>
+                {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+                {% endfor %}
+                <option value="직접입력">직접 입력...</option>
+            </select>
+            <input type="text" id="customTeam" placeholder="직접 입력" style="display: none;">
+            <p class="hint">팀을 선택한 후, 시간표의 빈칸을 클릭하여 채워주세요. (지우려면 '-- 지우기 --'를 선택하고 클릭하세요)</p>
+        </div>
+
+        <div id="scheduleGrid" class="schedule-grid">
+            {% for week in weeks %}
+            <div class="week-block">
+                <div class="week-header">
+                    WEEK {{ loop.index }} ({{ week.days[0].display }} ~ {{ week.days[-1].display }})
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="col-time">타임</th>
+                            <th class="col-floor">층</th>
+                            {% for day in week.days %}
+                            <th class="col-day">{{ day.display }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for slot in time_slots %}
+                        {% set outer_loop = loop %}
+                        <!-- 3층 -->
+                        <tr>
+                            <td rowspan="2" class="cell-time">{{ slot }}</td>
+                            <td class="cell-floor floor-3">3층</td>
+                            {% for day in week.days %}
+                            <td class="cell-data" data-key="{{ day.date_str }}_{{ outer_loop.index0 }}_3층"></td>
+                            {% endfor %}
+                        </tr>
+                        <!-- 4층 -->
+                        <tr>
+                            <td class="cell-floor floor-4">4층</td>
+                            {% for day in week.days %}
+                            <td class="cell-data" data-key="{{ day.date_str }}_{{ outer_loop.index0 }}_4층"></td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
