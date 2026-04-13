@@ -112,6 +112,17 @@ th, td {
     vertical-align: middle;
 }
 
+/* 타임별 구분을 위한 두꺼운 선 추가 */
+tr:nth-child(2n) td {
+    border-bottom: 2px solid #555; /* 각 타임(2개 행씩 묶음)의 아래쪽 경계를 강조 */
+}
+
+/* 3층과 4층 사이의 구분선은 기존 유지 또는 연하게 (원할 경우 조정 가능) */
+tr:nth-child(2n-1) td.cell-data, 
+tr:nth-child(2n-1) td.cell-floor {
+    border-bottom: 1px dashed #ccc; /* 3층과 4층 사이는 점선으로 더 가볍게 표시 */
+}
+
 th {
     background-color: var(--sub-header-bg);
     font-weight: bold;
@@ -145,6 +156,73 @@ th {
 .cell-data.filled {
     color: #000;
     text-shadow: 0px 0px 2px rgba(255,255,255,0.5);
+}
+
+/* --- Mobile Responsive Styles --- */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+    }
+
+    .actions .btn {
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 12px;
+    }
+
+    .controls {
+        padding: 10px;
+    }
+
+    .controls select, .controls input {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+        box-sizing: border-box;
+    }
+
+    /* 테이블 가로 스크롤 허용 */
+    .week-block {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 30px;
+    }
+
+    table {
+        min-width: 800px; /* 모바일에서도 표 형태를 유지하도록 최소 너비 지정 */
+    }
+
+    th, td {
+        padding: 6px 4px;
+        font-size: 12px;
+    }
+
+    .col-time { width: 100px; }
+    .col-floor { width: 40px; }
+    
+    .week-header {
+        position: sticky;
+        left: 0;
+        z-index: 10;
+        font-size: 14px;
+    }
 }
 
 /* --- Mobile Responsive Styles --- */
