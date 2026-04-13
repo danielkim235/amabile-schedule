@@ -28,19 +28,43 @@ def parse_teams(file_path):
         return teams
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
+    
+    current_gen = ""
     for line in lines:
         line = line.strip()
-        if not line or line.endswith('기'): continue
-        if any(line.startswith(p) for p in ['V', 'G', 'B', 'D', 'K', 'V:', 'G:', 'B:', 'D:', 'K:']): continue
+        if not line: continue
         
+        # Check for generation line (e.g., 41기)
+        if line.endswith('기'):
+            current_gen = line
+            continue
+            
+        # Skip member lines
+        if any(line.startswith(p) for p in ['V ', 'G ', 'B ', 'D ', 'K ', 'V:', 'G:', 'B:', 'D:', 'K:']):
+            continue
+        
+        # Extract song title
         song_title = ""
-        if '/' in line: song_title = line.split('/', 1)[1].strip()
-        elif '-' in line: song_title = line.split('-', 1)[1].strip()
+        if '/' in line:
+            song_title = line.split('/', 1)[1].strip()
+        elif '-' in line:
+            # Handle lines like "팀1 - 찬란" or "Vaundy- odoriko"
+            parts = line.split('-', 1)
+            # If the first part is just "팀X", the second part is the song
+            if parts[0].strip().startswith('팀'):
+                song_title = parts[1].strip()
+            else:
+                # For "Vaundy- odoriko", the part after '-' is the song
+                song_title = parts[1].strip()
         
         if song_title:
+            # Filter out blacklisted keywords
             blacklist = ['Oasis', '검정치마']
             if not any(k in song_title for k in blacklist):
-                teams.append(song_title)
+                # Append generation info if available
+                display_name = f"{song_title} ({current_gen})" if current_gen else song_title
+                teams.append(display_name)
+                
     return teams
 
 @app.route('/')
