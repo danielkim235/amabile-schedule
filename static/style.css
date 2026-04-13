@@ -90,14 +90,30 @@ h1 {
     margin-bottom: 40px;
 }
 
-.week-header {
+.week-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: var(--header-bg);
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
     border: 1px solid var(--border-color);
     border-bottom: none;
+    padding: 5px 15px;
 }
+
+.week-header {
+    background-color: transparent;
+    padding: 10px 0;
+    font-weight: bold;
+    border: none;
+}
+
+.btn.img-btn {
+    background-color: #607d8b;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+}
+.btn.img-btn:hover { background-color: #455a64; }
 
 table {
     width: 100%;

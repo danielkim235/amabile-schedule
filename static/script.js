@@ -123,4 +123,24 @@ document.addEventListener('DOMContentLoaded', () => {
     exportBtn.addEventListener('click', () => {
         window.location.href = '/api/export';
     });
+
+    window.captureWeek = function(elementId, fileName) {
+        const element = document.getElementById(elementId);
+        // 캡처 시 버튼은 안 보이게 숨기기
+        const btn = element.querySelector('.img-btn');
+        btn.style.display = 'none';
+
+        html2canvas(element, {
+            backgroundColor: "#f9f9f9",
+            scale: 2, // 고해상도 캡처
+            logging: false,
+            useCORS: true
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = fileName + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            btn.style.display = 'block'; // 캡처 후 버튼 다시 표시
+        });
+    };
 });

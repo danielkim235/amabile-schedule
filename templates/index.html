@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>합주 시간표 작성</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- 이미지 캡처를 위한 라이브러리 추가 -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -32,9 +34,12 @@
 
         <div id="scheduleGrid" class="schedule-grid">
             {% for week in weeks %}
-            <div class="week-block">
-                <div class="week-header">
-                    WEEK {{ loop.index }} ({{ week.days[0].display }} ~ {{ week.days[-1].display }})
+            <div class="week-block" id="week-block-{{ loop.index }}">
+                <div class="week-header-row">
+                    <div class="week-header">
+                        WEEK {{ loop.index }} ({{ week.days[0].display }} ~ {{ week.days[-1].display }})
+                    </div>
+                    <button class="btn img-btn" onclick="captureWeek('week-block-{{ loop.index }}', '{{ loop.index }}주차_시간표')">이미지로 저장</button>
                 </div>
                 <table>
                     <thead>
