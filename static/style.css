@@ -68,8 +68,13 @@ h1 {
 .controls {
     margin-bottom: 20px;
     padding: 15px;
-    background: #f0f4f8;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
+    position: sticky; /* 상단 고정 */
+    top: 0;
+    z-index: 100; /* 시간표보다 위에 표시 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 추가 */
 }
 
 .controls select, .controls input {
@@ -78,6 +83,7 @@ h1 {
     border: 1px solid #aaa;
     border-radius: 4px;
     margin-left: 10px;
+    background-color: #fff;
 }
 
 .hint {
